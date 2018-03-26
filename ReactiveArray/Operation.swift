@@ -8,24 +8,24 @@
 
 import Foundation
 
-public enum Operation<T>: CustomDebugStringConvertible {
+public enum ArrayOperation<T>: CustomDebugStringConvertible {
     
     case Append(value: T)
     case Insert(value: T, atIndex: Int)
     case Update(value: T, atIndex: Int)
     case RemoveElement(atIndex: Int)
     
-    public func map<U>(mapper: T -> U) -> Operation<U> {
-        let result: Operation<U>
+    public func map<U>(mapper: (T) -> U) -> ArrayOperation<U> {
+        let result: ArrayOperation<U>
         switch self {
         case .Append(let value):
-            result = Operation<U>.Append(value: mapper(value))
+            result = ArrayOperation<U>.Append(value: mapper(value))
         case .Insert(let value, let index):
-            result = Operation<U>.Insert(value: mapper(value), atIndex: index)
+            result = ArrayOperation<U>.Insert(value: mapper(value), atIndex: index)
         case .Update(let value, let index):
-            result = Operation<U>.Update(value: mapper(value), atIndex: index)
+            result = ArrayOperation<U>.Update(value: mapper(value), atIndex: index)
         case .RemoveElement(let index):
-            result = Operation<U>.RemoveElement(atIndex: index)
+            result = ArrayOperation<U>.RemoveElement(atIndex: index)
         }
         return result
     }
@@ -54,13 +54,13 @@ public enum Operation<T>: CustomDebugStringConvertible {
         case .Update(let value, _):
             return value
         default:
-            return Optional.None
+            return Optional.none
         }
     }
     
 }
 
-public func ==<T: Equatable>(lhs: Operation<T>, rhs: Operation<T>) -> Bool {
+public func ==<T: Equatable>(lhs: ArrayOperation<T>, rhs: ArrayOperation<T>) -> Bool {
     switch (lhs, rhs) {
     case (.Append(let leftValue), .Append(let rightValue)):
         return leftValue == rightValue
@@ -76,15 +76,15 @@ public func ==<T: Equatable>(lhs: Operation<T>, rhs: Operation<T>) -> Bool {
 }
 
 // WTF!!! Again this is needed because the compiler is super stupid!
-public func !=<T: Equatable>(lhs: Operation<T>, rhs: Operation<T>) -> Bool {
+public func !=<T: Equatable>(lhs: ArrayOperation<T>, rhs: ArrayOperation<T>) -> Bool {
     return !(lhs == rhs)
 }
 
 // This is needed because somehow the compiler does not realize
 // that when T is equatable it can compare an array of operations.
-public func ==<T: Equatable>(lhs: [Operation<T>], rhs: [Operation<T>]) -> Bool {
+public func ==<T: Equatable>(lhs: [ArrayOperation<T>], rhs: [ArrayOperation<T>]) -> Bool {
     let areEqual: () -> Bool = {
-        for var i = 0; i < lhs.count; i++ {
+        for i in 0..<lhs.count {
             if lhs[i] != rhs[i] {
                 return false
             }

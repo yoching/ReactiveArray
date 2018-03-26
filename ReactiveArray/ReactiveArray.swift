@@ -17,13 +17,13 @@ import Foundation
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
-public final class ReactiveArray<T>: CollectionType, MutableCollectionType, CustomDebugStringConvertible {
+public final class ReactiveArray<T>: Collection, MutableCollection, CustomDebugStringConvertible {
     
-    public typealias OperationProducer = SignalProducer<Operation<T>, NoError>
-    public typealias OperationSignal = Signal<Operation<T>, NoError>
+    public typealias OperationProducer = SignalProducer<ArrayOperation<T>, NoError>
+    public typealias OperationSignal = Signal<ArrayOperation<T>, NoError>
     
     private var _elements: Array<T> = []
     
@@ -33,14 +33,15 @@ public final class ReactiveArray<T>: CollectionType, MutableCollectionType, Cust
     }
     
     public var producer: OperationProducer {
-        let appendCurrentElements = OperationProducer(values:_elements.map { Operation.Append(value: $0) })
+        
+        let appendCurrentElements = OperationProducer(_elements.map { ArrayOperation.Append(value: $0) })
         let forwardOperations = OperationProducer { (observer, dispoable) in self._signal.observe(observer) }
         
         return  appendCurrentElements.concat(forwardOperations)
     }
     
     private let _mutableCount: MutableProperty<Int>
-    public let observableCount:AnyProperty<Int>
+    public let observableCount: Property<Int>
     
     public var isEmpty: Bool {
         return _elements.isEmpty
@@ -67,7 +68,7 @@ public final class ReactiveArray<T>: CollectionType, MutableCollectionType, Cust
         if _elements.count > 0 {
             value = _elements[_elements.count - 1]
         } else {
-            value = Optional.None
+            value = Optional.none
         }
         return value
     }
@@ -79,11 +80,11 @@ public final class ReactiveArray<T>: CollectionType, MutableCollectionType, Cust
     public init(elements:[T]) {
         _elements = elements
         _mutableCount = MutableProperty(elements.count)
-        observableCount = AnyProperty(_mutableCount)
+        observableCount = Property(_mutableCount)
         
-        _signal.observe { [unowned self](event) in
-            if case .Next(let operation) = event {
-                self.updateArray(operation)
+        _signal.observe { [unowned self] event in
+            if case .value(let operation) = event {
+                self.updateArray(operation: operation)
             }
         }
 
@@ -104,50 +105,57 @@ public final class ReactiveArray<T>: CollectionType, MutableCollectionType, Cust
             return _elements[index]
         }
         set(newValue) {
-            update(newValue, atIndex: index)
+            update(element: newValue, atIndex: index)
         }
     }
     
+    public func index(after i: Int) -> Int {
+        guard i < endIndex else {
+            fatalError("Cannot increment endIndex")
+        }
+        return i + 1
+    }
+    
     public func append(element: T) {
-        let operation: Operation<T> = .Append(value: element)
-        _sink.sendNext(operation)
+        let operation: ArrayOperation<T> = .Append(value: element)
+        _sink.send(value: operation)
     }
     
     public func insert(newElement: T, atIndex index : Int) {
-        let operation: Operation<T> = .Insert(value: newElement, atIndex: index)
-        _sink.sendNext(operation)
+        let operation: ArrayOperation<T> = .Insert(value: newElement, atIndex: index)
+        _sink.send(value: operation)
     }
     
     public func update(element: T, atIndex index: Int) {
-        let operation: Operation<T> = .Update(value: element, atIndex: index)
-        _sink.sendNext(operation)
+        let operation: ArrayOperation<T> = .Update(value: element, atIndex: index)
+        _sink.send(value: operation)
     }
     
     public func removeAtIndex(index:Int) {
-        let operation: Operation<T> = .RemoveElement(atIndex: index)
-        _sink.sendNext(operation)
+        let operation: ArrayOperation<T> = .RemoveElement(atIndex: index)
+        _sink.send(value: operation)
     }
     
-    public func mirror<U>(transformer: T -> U) -> ReactiveArray<U> {
-        return ReactiveArray<U>(producer: producer.map { $0.map(transformer) })
+    public func mirror<U>(transformer: @escaping (T) -> U) -> ReactiveArray<U> {
+        return ReactiveArray<U>(producer: producer.map { $0.map(mapper: transformer) })
     }
     
     public func toArray() -> Array<T> {
         return _elements
     }
     
-    private func updateArray(operation: Operation<T>) {
+    private func updateArray(operation: ArrayOperation<T>) {
         switch operation {
         case .Append(let value):
             _elements.append(value)
             _mutableCount.value = _elements.count
         case .Insert(let value, let index):
-            _elements.insert(value, atIndex: index)
+            _elements.insert(value, at: index)
             _mutableCount.value = _elements.count
         case .Update(let value, let index):
             _elements[index] = value
         case .RemoveElement(let index):
-            _elements.removeAtIndex(index)
+            _elements.remove(at: index)
             _mutableCount.value = _elements.count
         }
     }

@@ -19,6 +19,8 @@
 		9DF1E5661B41F937007A6182 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1E5641B41F937007A6182 /* Nimble.framework */; };
 		9DF1E5671B41F937007A6182 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1E5651B41F937007A6182 /* Quick.framework */; };
 		9DF1E5691B444BCA007A6182 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF1E5681B444BCA007A6182 /* Operation.swift */; };
+		E3133A3820694BA000DF802D /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3133A3720694BA000DF802D /* ReactiveSwift.framework */; };
+		E3133A3920694BD300DF802D /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3133A3720694BA000DF802D /* ReactiveSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,7 @@
 		9DF1E5641B41F937007A6182 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = SOURCE_ROOT; };
 		9DF1E5651B41F937007A6182 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = SOURCE_ROOT; };
 		9DF1E5681B444BCA007A6182 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		E3133A3720694BA000DF802D /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/ReactiveSwift.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +57,7 @@
 			files = (
 				9DF1E55F1B41E6D1007A6182 /* ReactiveCocoa.framework in Frameworks */,
 				9DF1E5601B41E6D1007A6182 /* Result.framework in Frameworks */,
+				E3133A3820694BA000DF802D /* ReactiveSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +68,7 @@
 				9DF1E5661B41F937007A6182 /* Nimble.framework in Frameworks */,
 				9DF1E5671B41F937007A6182 /* Quick.framework in Frameworks */,
 				9DF1E5621B41E6E1007A6182 /* ReactiveCocoa.framework in Frameworks */,
+				E3133A3920694BD300DF802D /* ReactiveSwift.framework in Frameworks */,
 				9DF1E5631B41E6E1007A6182 /* Result.framework in Frameworks */,
 				9DF1E5461B41E438007A6182 /* ReactiveArray.framework in Frameworks */,
 			);
@@ -131,6 +136,7 @@
 		9DF1E55A1B41E6A4007A6182 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E3133A3720694BA000DF802D /* ReactiveSwift.framework */,
 				9DF1E5641B41F937007A6182 /* Nimble.framework */,
 				9DF1E5651B41F937007A6182 /* Quick.framework */,
 				9DF1E55C1B41E6D1007A6182 /* ReactiveCocoa.framework */,
@@ -255,6 +261,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework",
 			);
 			name = Carthage;
 			outputPaths = (
@@ -273,6 +280,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework",
 			);
 			name = Carthage;
 			outputPaths = (
@@ -356,6 +364,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -396,6 +405,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -9,26 +9,26 @@
 import Quick
 import Nimble
 import ReactiveArray
-import ReactiveCocoa
+import ReactiveSwift
 
 class OperationSpec: QuickSpec {
 
     override func spec() {
-        
-        var operation: Operation<Int>!
+
+        var operation: ArrayOperation<Int>!
         
         describe("#map") {
             
             context("when the operation is an Append operation") {
                 
                 beforeEach {
-                    operation = Operation.Append(value: 10)
+                    operation = ArrayOperation.Append(value: 10)
                 }
                 
                 it("maps the value to be appended") {
                     let mappedOperation = operation.map { $0 * 2 }
                     
-                    let areEqual = mappedOperation == Operation.Append(value: 20)
+                    let areEqual = mappedOperation == ArrayOperation.Append(value: 20)
                     expect(areEqual).to(beTrue())
                 }
                 
@@ -37,13 +37,13 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Insert operation") {
                 
                 beforeEach {
-                    operation = Operation.Insert(value: 10, atIndex: 5)
+                    operation = ArrayOperation.Insert(value: 10, atIndex: 5)
                 }
                 
                 it("maps the value to be inserted") {
                     let mappedOperation = operation.map { $0 * 2 }
                     
-                    let areEqual = mappedOperation == Operation.Insert(value: 20, atIndex: 5)
+                    let areEqual = mappedOperation == ArrayOperation.Insert(value: 20, atIndex: 5)
                     expect(areEqual).to(beTrue())
                 }
                 
@@ -52,13 +52,13 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Update operation") {
                 
                 beforeEach {
-                    operation = Operation.Update(value: 10, atIndex: 5)
+                    operation = ArrayOperation.Update(value: 10, atIndex: 5)
                 }
                 
                 it("maps the value to be updated") {
                     let mappedOperation = operation.map { $0 * 2 }
                     
-                    let areEqual = mappedOperation == Operation.Update(value: 20, atIndex: 5)
+                    let areEqual = mappedOperation == ArrayOperation.Update(value: 20, atIndex: 5)
                     expect(areEqual).to(beTrue())
                 }
                 
@@ -67,7 +67,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is a Delete operation") {
                 
                 beforeEach {
-                    operation = Operation.RemoveElement(atIndex: 5)
+                    operation = ArrayOperation.RemoveElement(atIndex: 5)
                 }
                 
                 it("does nothing") {
@@ -86,7 +86,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Append operation") {
                 
                 beforeEach {
-                    operation = Operation.Append(value: 10)
+                    operation = ArrayOperation.Append(value: 10)
                 }
                 
                 it("returns the appended value") {
@@ -98,7 +98,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Insert operation") {
                 
                 beforeEach {
-                    operation = Operation.Insert(value: 10, atIndex: 5)
+                    operation = ArrayOperation.Insert(value: 10, atIndex: 5)
                 }
                 
                 it("returns the inserted value") {
@@ -110,7 +110,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Update operation") {
                 
                 beforeEach {
-                    operation = Operation.Update(value: 10, atIndex: 5)
+                    operation = ArrayOperation.Update(value: 10, atIndex: 5)
                 }
                 
                 it("returns the updated value") {
@@ -122,7 +122,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Remove operation") {
                 
                 beforeEach {
-                    operation = Operation.RemoveElement(atIndex: 5)
+                    operation = ArrayOperation.RemoveElement(atIndex: 5)
                 }
                 
                 it("returns .None") {
