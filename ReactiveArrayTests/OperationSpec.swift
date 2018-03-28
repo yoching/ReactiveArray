@@ -22,13 +22,13 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Append operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.Append(value: 10)
+                    operation = ArrayOperation.append(value: 10)
                 }
                 
                 it("maps the value to be appended") {
                     let mappedOperation = operation.map { $0 * 2 }
                     
-                    let areEqual = mappedOperation == ArrayOperation.Append(value: 20)
+                    let areEqual = mappedOperation == ArrayOperation.append(value: 20)
                     expect(areEqual).to(beTrue())
                 }
                 
@@ -37,13 +37,13 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Insert operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.Insert(value: 10, atIndex: 5)
+                    operation = ArrayOperation.insert(value: 10, at: 5)
                 }
                 
                 it("maps the value to be inserted") {
                     let mappedOperation = operation.map { $0 * 2 }
                     
-                    let areEqual = mappedOperation == ArrayOperation.Insert(value: 20, atIndex: 5)
+                    let areEqual = mappedOperation == ArrayOperation.insert(value: 20, at: 5)
                     expect(areEqual).to(beTrue())
                 }
                 
@@ -52,13 +52,13 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Update operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.Update(value: 10, atIndex: 5)
+                    operation = ArrayOperation.update(value: 10, at: 5)
                 }
                 
                 it("maps the value to be updated") {
                     let mappedOperation = operation.map { $0 * 2 }
                     
-                    let areEqual = mappedOperation == ArrayOperation.Update(value: 20, atIndex: 5)
+                    let areEqual = mappedOperation == ArrayOperation.update(value: 20, at: 5)
                     expect(areEqual).to(beTrue())
                 }
                 
@@ -67,7 +67,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is a Delete operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.RemoveElement(atIndex: 5)
+                    operation = ArrayOperation.remove(at: 5)
                 }
                 
                 it("does nothing") {
@@ -86,7 +86,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Append operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.Append(value: 10)
+                    operation = ArrayOperation.append(value: 10)
                 }
                 
                 it("returns the appended value") {
@@ -98,7 +98,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Insert operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.Insert(value: 10, atIndex: 5)
+                    operation = ArrayOperation.insert(value: 10, at: 5)
                 }
                 
                 it("returns the inserted value") {
@@ -110,7 +110,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Update operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.Update(value: 10, atIndex: 5)
+                    operation = ArrayOperation.update(value: 10, at: 5)
                 }
                 
                 it("returns the updated value") {
@@ -122,7 +122,7 @@ class OperationSpec: QuickSpec {
             context("when the operation is an Remove operation") {
                 
                 beforeEach {
-                    operation = ArrayOperation.RemoveElement(atIndex: 5)
+                    operation = ArrayOperation.remove(at: 5)
                 }
                 
                 it("returns .None") {

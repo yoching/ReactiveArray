@@ -7,16 +7,6 @@
 //
 
 import Foundation
-
-//
-//  ReactiveArray.swift
-//  WLXViewModel
-//
-//  Created by Guido Marucci Blas on 6/15/15.
-//  Copyright (c) 2015 Wolox. All rights reserved.
-//
-
-import Foundation
 import ReactiveSwift
 import Result
 
@@ -34,10 +24,10 @@ public final class ReactiveArray<T>: Collection, MutableCollection, CustomDebugS
     
     public var producer: OperationProducer {
         
-        let appendCurrentElements = OperationProducer(_elements.map { ArrayOperation.Append(value: $0) })
+        let appendCurrentElements = OperationProducer(_elements.map { .append(value: $0) })
         let forwardOperations = OperationProducer { (observer, dispoable) in self._signal.observe(observer) }
         
-        return  appendCurrentElements.concat(forwardOperations)
+        return appendCurrentElements.concat(forwardOperations)
     }
     
     private let _mutableCount: MutableProperty<Int>
@@ -84,7 +74,7 @@ public final class ReactiveArray<T>: Collection, MutableCollection, CustomDebugS
         
         _signal.observe { [unowned self] event in
             if case .value(let operation) = event {
-                self.updateArray(operation: operation)
+                self.updateArray(operation)
             }
         }
 
@@ -105,7 +95,7 @@ public final class ReactiveArray<T>: Collection, MutableCollection, CustomDebugS
             return _elements[index]
         }
         set(newValue) {
-            update(element: newValue, atIndex: index)
+            update(newValue, at: index)
         }
     }
     
@@ -116,45 +106,45 @@ public final class ReactiveArray<T>: Collection, MutableCollection, CustomDebugS
         return i + 1
     }
     
-    public func append(element: T) {
-        let operation: ArrayOperation<T> = .Append(value: element)
+    public func append(_ element: T) {
+        let operation: ArrayOperation<T> = .append(value: element)
         _sink.send(value: operation)
     }
     
-    public func insert(newElement: T, atIndex index : Int) {
-        let operation: ArrayOperation<T> = .Insert(value: newElement, atIndex: index)
+    public func insert(_ newElement: T, at index : Int) {
+        let operation: ArrayOperation<T> = .insert(value: newElement, at: index)
         _sink.send(value: operation)
     }
     
-    public func update(element: T, atIndex index: Int) {
-        let operation: ArrayOperation<T> = .Update(value: element, atIndex: index)
+    public func update(_ element: T, at index: Int) {
+        let operation: ArrayOperation<T> = .update(value: element, at: index)
         _sink.send(value: operation)
     }
     
-    public func removeAtIndex(index:Int) {
-        let operation: ArrayOperation<T> = .RemoveElement(atIndex: index)
+    public func remove(at index: Int) {
+        let operation: ArrayOperation<T> = .remove(at: index)
         _sink.send(value: operation)
     }
     
-    public func mirror<U>(transformer: @escaping (T) -> U) -> ReactiveArray<U> {
-        return ReactiveArray<U>(producer: producer.map { $0.map(mapper: transformer) })
+    public func mirror<U>(_ transformer: @escaping (T) -> U) -> ReactiveArray<U> {
+        return ReactiveArray<U>(producer: producer.map { $0.map(transformer) })
     }
     
     public func toArray() -> Array<T> {
         return _elements
     }
     
-    private func updateArray(operation: ArrayOperation<T>) {
+    private func updateArray(_ operation: ArrayOperation<T>) {
         switch operation {
-        case .Append(let value):
+        case .append(let value):
             _elements.append(value)
             _mutableCount.value = _elements.count
-        case .Insert(let value, let index):
+        case .insert(let value, let index):
             _elements.insert(value, at: index)
             _mutableCount.value = _elements.count
-        case .Update(let value, let index):
+        case .update(let value, let index):
             _elements[index] = value
-        case .RemoveElement(let index):
+        case .remove(let index):
             _elements.remove(at: index)
             _mutableCount.value = _elements.count
         }
